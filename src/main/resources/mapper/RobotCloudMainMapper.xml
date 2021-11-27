@@ -1,0 +1,92 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yang.robotcloud.mapper.RobotCloudMainMapper">
+    <insert id="insertRobot" parameterType="hashmap">
+        insert into Root.robotInfo(
+                                   robot_name,
+                                   robot_img,
+                                   longitude,
+                                   latitude,
+                                   location_name,
+                                   state,
+                                   registerTime,
+                                   password
+
+        )
+        values (
+                   #{robot_name},
+                   #{robot_img},
+                   #{longitude},
+                   #{latitude},
+                   #{location_name},
+                   #{state},
+                   #{registerTime},
+                   #{password}
+               )
+    </insert>
+    <update id="updateRobot" parameterType="hashmap">
+        update Root.robotInfo
+        <set>
+            <if test="activeTime != null">
+                activeTime = #{activeTime},
+            </if>
+            <if test="state != null">
+                state = #{state},
+            </if>
+            <if test="latitude != null">
+                latitude = #{latitude},
+            </if>
+            <if test="longitude != null">
+                longitude = #{longitude},
+            </if>
+            <if test="location_name != null">
+                location_name = #{location_name},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+
+    <select id="queryAllActiveRobots" resultType="com.yang.robotcloud.entity.RobotInfo" parameterType="hashmap">
+        select * from Root.robotInfo
+        <where>
+            1=1
+            <if test="id !=null">
+                and id != #{id}
+            </if>
+            <if test="state !=null">
+                and state = #{state}
+            </if>
+        </where>
+            order by id asc
+    </select>
+    <select id="queryRobot" resultType="com.yang.robotcloud.entity.RobotInfo" parameterType="hashmap">
+        select * from Root.robotInfo
+        <where>
+            1=1
+            <if test="id !=null">
+                and id = #{id}
+            </if>
+            <if test="robot_name !=null">
+                and robot_name = #{robot_name}
+            </if>
+            <if test="password !=null">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+    <select id="queryAllRobots" resultType="com.yang.robotcloud.entity.RobotInfo"  parameterType="hashmap">
+        select * from Root.robotInfo
+        <where>
+            1=1
+            <if test="id !=null">
+                and id = #{id}
+            </if>
+            <if test="state !=null">
+                and state = #{state}
+            </if>
+
+        </where>
+    </select>
+</mapper>
